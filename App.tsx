@@ -1,118 +1,97 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
+import React, { Component } from 'react';
+import { StyleSheet, Text, View, Image, TouchableOpacity } from 'react-native';
 
-import React from 'react';
-import type {PropsWithChildren} from 'react';
-import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
-} from 'react-native';
+interface Props {}
 
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
-
-type SectionProps = PropsWithChildren<{
-  title: string;
-}>;
-
-function Section({children, title}: SectionProps): JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
-  return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
-    </View>
-  );
+interface IFrases {
+  textoFrase: string;
+  img: any;
 }
 
-function App(): JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
+const frases: string[] = [
+  'Tente não se tornar uma pessoa de sucesso, mas tente se tornar uma pessoa de valor.',
+  'Nenhum mentiroso tem uma memória suficientemente boa para ser um mentiroso de êxito.',
+  'Todo mundo é capaz de sentir os sofrimentos de um amigo. Ver com agrado os seus êxitos exige uma natureza muito delicada.',
+  'Lute. Acredite. Conquiste. Perca. Deseje. Espere. Alcance. Invada. Caia. Seja tudo o quiser ser, mas acima de tudo, seja você sempre.',
+  'Se você quiser fazer uma mudança permanente, pare de se concentrar no tamanho dos seus problemas e comece a focar no seu tamanho!',
+  'A nossa maior glória não reside no fato de nunca cairmos, mas sim em levantarmo-nos sempre depois de cada queda.',
+  'É melhor falhar na originalidade do que ter sucesso na imitação.',
+  'Um verdadeiro empreendedor é alguém que não tem rede de segurança por baixo deles.'
+];
 
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
+class App extends Component<Props, IFrases> {
+  constructor(props: Props) {
+    super(props);
+    
+    this.state = {
+      textoFrase: 'Um verdadeiro empreendedor é alguém que não tem rede de segurança por baixo deles.',
+      img: require('./src/biscoito.png')
+    };
 
-  return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
-      />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Header />
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.tsx</Text> to change this
-            screen and then come back to see your edits.
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
-        </View>
-      </ScrollView>
-    </SafeAreaView>
-  );
+    this.quebrarBiscoito = this.quebrarBiscoito.bind(this);
+  }
+
+  quebrarBiscoito() {
+    const numeroAleatorio = Math.floor(Math.random() * frases.length);
+    this.setState({
+      textoFrase: `"${frases[numeroAleatorio]}"`,
+      img: require('./src/biscoitoAberto.png')
+    });
+  }
+
+  render() {
+    return (
+      <View style={styles.container}>
+        <Image
+          source={this.state.img}
+          style={styles.img}
+        />
+        <Text style={styles.textofrase}>{this.state.textoFrase}</Text>
+        <TouchableOpacity style={styles.botao} onPress={this.quebrarBiscoito}>
+          <View style={styles.btnArea}>
+            <Text style={styles.btnTexto}>Abrir Biscoito da sorte</Text>
+          </View>
+        </TouchableOpacity>
+      </View>
+    );
+  }
 }
 
 const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
+  container: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center'
   },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
+  img: {
+    width: 250,
+    height: 250
   },
-  sectionDescription: {
-    marginTop: 8,
+  textofrase: {
+    fontSize: 20,
+    color: '#dd7b22',
+    margin: 30,
+    fontStyle: 'italic',
+    textAlign: 'center'
+  },
+  botao: {
+    width: 250,
+    height: 50,
+    borderWidth: 2,
+    borderColor: '#dd7b22',
+    borderRadius: 25
+  },
+  btnArea: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  btnTexto: {
     fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
-  },
+    fontWeight: 'bold',
+    color: '#dd7b22',
+  }
 });
 
 export default App;
